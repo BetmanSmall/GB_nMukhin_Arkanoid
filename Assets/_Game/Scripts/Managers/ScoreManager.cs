@@ -1,14 +1,14 @@
 using TMPro;
 using UnityEngine;
-namespace _Game.Scripts {
+namespace _Game.Scripts.Managers {
     public class ScoreManager : MonoBehaviour {
         public static ScoreManager Instance { get; private set; }
         public int Score { get; private set; }
-        [SerializeField] private TMP_Text ScoreText;
+        [SerializeField] private TMP_Text scoreText;
 
         private void Awake() {
             if (Instance != null && Instance != this) {
-                Destroy(this.gameObject);
+                Destroy(gameObject);
             } else {
                 Instance = this;
             }
@@ -25,7 +25,7 @@ namespace _Game.Scripts {
         }
 
         private void UpdateScoreText() {
-            ScoreText.text = Score.ToString();
+            scoreText.text = Score.ToString();
         }
     }
 }

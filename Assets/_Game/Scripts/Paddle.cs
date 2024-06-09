@@ -1,20 +1,20 @@
 using UnityEngine;
 namespace _Game.Scripts {
     public class Paddle : MonoBehaviour {
-        [SerializeField] private GameObject Ball;
-        [SerializeField] private float _speed = 10f;
+        [SerializeField] private GameObject ball;
+        [SerializeField] private float speed = 10f;
         private Rigidbody2D _ballRigidbody;
         private Vector3 _initialPosition;
         private float _minX;
         private float _maxX;
-        private float _maxBounceAngle = 75;
+        private float _maxBounceAngle = 75f;
 
         public void ToInitialPosition() {
             transform.position = _initialPosition;
         }
 
         private void Start() {
-            _ballRigidbody = Ball.GetComponent<Rigidbody2D>();
+            _ballRigidbody = ball.GetComponent<Rigidbody2D>();
             _initialPosition = transform.position;
             CalculateMovementBoundaries();
         }
@@ -32,7 +32,7 @@ namespace _Game.Scripts {
 
         private void Move() {
             float horizontalInput = Input.GetAxisRaw("Horizontal");
-            float newPosition = transform.position.x + horizontalInput * _speed * Time.deltaTime;
+            float newPosition = transform.position.x + horizontalInput * speed * Time.deltaTime;
             float clampedPosition = Mathf.Clamp(newPosition, _minX, _maxX);
             transform.position = new Vector3(clampedPosition, transform.position.y, transform.position.z);
         }

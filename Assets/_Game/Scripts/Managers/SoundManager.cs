@@ -1,6 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
-namespace _Game.Scripts {
+namespace _Game.Scripts.Managers {
     public class SoundManager : MonoBehaviour {
         public static SoundManager Instance { get; private set; }
         public AudioClip hitSound;
@@ -11,15 +11,15 @@ namespace _Game.Scripts {
 
         private void Awake() {
             if (Instance != null && Instance != this) {
-                Destroy(this.gameObject);
+                Destroy(gameObject);
             } else {
                 Instance = this;
-                DontDestroyOnLoad(this.gameObject);
+                DontDestroyOnLoad(gameObject);
             }
         }
 
         private void Start() {
-            _audioSource = this.gameObject.GetOrAddComponent<AudioSource>();
+            _audioSource = gameObject.GetOrAddComponent<AudioSource>();
         }
 
         public void PlaySound(AudioClip sound) {

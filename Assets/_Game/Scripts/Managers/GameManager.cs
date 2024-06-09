@@ -1,16 +1,18 @@
 using TMPro;
 using UnityEngine;
-namespace _Game.Scripts {
+using UnityEngine.Events;
+namespace _Game.Scripts.Managers {
     public class GameManager : MonoBehaviour {
         public static GameManager Instance { get; private set; }
-        public int Lives = 8;
+        [SerializeField] private GameObject gameOverPanel;
+        [SerializeField] private TextMeshProUGUI endGameText;
+        [SerializeField] private Ball ball;
+        [SerializeField] private Paddle paddle;
         private SoundManager _soundManager;
         private BricksManager _bricksManager;
         private ScoreManager _scoreManager;
-        [SerializeField] private GameObject gameOverPanel;
-        [SerializeField] private TextMeshProUGUI _endGameText;
-        [SerializeField] private Ball _ball;
-        [SerializeField] private Paddle _paddle;
+        public int lives = 8;
+        public UnityEvent onGameRestart = new UnityEvent();
 
         private void Awake() {
             if (Instance != null && Instance != this) {
@@ -27,7 +29,7 @@ namespace _Game.Scripts {
         }
 
         public void CheckGameState() {
-            if (Lives <= 0) {
+            if (lives <= 0) {
                 GameOver();
             } else if (_bricksManager.IsCleared()) {
                 Win();
@@ -38,26 +40,25 @@ namespace _Game.Scripts {
             Time.timeScale = 0;
             _soundManager.PlaySound(_soundManager.loseSound);
             gameOverPanel.SetActive(true);
-            _endGameText.text = "Game Over";
-            _endGameText.color = Color.red;
+            endGameText.text = "Game Over";
         }
 
         private void Win() {
             Time.timeScale = 0;
             _soundManager.PlaySound(_soundManager.winSound);
             gameOverPanel.SetActive(true);
-            _endGameText.text = "You Win";
-            _endGameText.color = Color.green;
+            endGameText.text = "You Win";
         }
 
         public void RestartGame() {
-            _ball.ResetBall();
-            Lives = 8;
+            ball.ResetBall();
+            lives = 8;
             _scoreManager.ResetScore();
             gameOverPanel.SetActive(false);
-            _paddle.ToInitialPosition();
+            paddle.ToInitialPosition();
             _bricksManager.ResetBricks();
             Time.timeScale = 1;
+            onGameRestart.Invoke();
         }
 
         public void QuitGame() {
